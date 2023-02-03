@@ -25,7 +25,7 @@ source("covid_analysis/estimate_fns.R")
 #####################################
 ##########  preprocessing ###########
 #####################################
-data = read.csv("covid_analysis/covid_data.csv")
+load("covid_analysis/mockdata.rda")
 
 # combining type I and type II diabetes into one variable
 data$dm <- ifelse(data$type_1_dm=="Y" | data$type_2_dm=="Y", "Y","N" )
@@ -63,9 +63,10 @@ unique.data$y_ord[unique.data$pid %in% rownames(idchange3)]  = 2
 final =unique.data[!duplicated(unique.data$pid), ]
 data = final
 
-# use age as numeric
-data$age = factor(data$age, levels = c("<30","30-40", "40-50", "50-60", "60-70", "70-80",">80"))
-data$age = as.numeric(data$age)
+# discretize age
+data$age <- as.numeric(paste(data$age_at_admit))
+data$age[is.na(data$age)] <- 90
+data$age <- as.numeric(cut(data$age, seq(20,90,length.out=8),include.lowest = T))
 
 # unfactor others:
 data$Gender <- as.numeric(as.factor(data$Gender)) # 2--male
