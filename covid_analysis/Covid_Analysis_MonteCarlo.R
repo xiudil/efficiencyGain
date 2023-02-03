@@ -4,7 +4,7 @@
 # compare with existing methods # 
 ####################
 
-# computationally intensive, so we can run cluster
+# computationally intensive, so we run on cluster
 # P is the argument specifying seed
 # need to fit adjusted and unadjusted estimators B times on simulated data
 
@@ -29,7 +29,7 @@ library(survival)
 library(survSuperLearner)
 
 
-data = read.csv("covid_analysis/mock_data.csv")
+load("covid_analysis/mockdata.rda")
 
 logit = function(x){
   return(log(x/(1-x)))
